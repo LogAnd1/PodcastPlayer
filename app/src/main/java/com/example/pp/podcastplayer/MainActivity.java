@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -20,24 +22,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
+        loadStart();
         int permRead = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         int permWrite = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permRead != PackageManager.PERMISSION_GRANTED ||
-                permWrite != PackageManager.PERMISSION_GRANTED)
+        if (permRead != PackageManager.PERMISSION_GRANTED || permWrite != PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(
                     this, // Aktivnost, ki zahteva pravice.
@@ -48,9 +36,12 @@ public class MainActivity extends AppCompatActivity
                     221
             );
         }
+        else{
+            loadMain();
+        }
+
     }
 
-    //todo Teestni todo comit moderfakr
 
     @Override
     public void onBackPressed() {
@@ -106,6 +97,69 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void loadMain(){
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void loadStart(){
+        setContentView(R.layout.activity_main2);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+    }
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, // koda zahtevka
+            String permissions[], // tabela zahtevanih pravic
+            int[] grantResults) // tabela odobritev
+    {
+        if (requestCode == 221) { // Če je št. zahtevka enaka 1234.
+            if (grantResults.length == 0){
+            }
+            else {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    loadMain();
+                }
+            }
+        }
+    }
+
+    public void tryAgain(View view) {
+        int permRead = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permWrite = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permRead != PackageManager.PERMISSION_GRANTED || permWrite != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(
+                    this, // Aktivnost, ki zahteva pravice.
+                    new String[]{ // Tabela zahtevanih pravic.
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    221
+            );
+        }
+    }
 
 }
