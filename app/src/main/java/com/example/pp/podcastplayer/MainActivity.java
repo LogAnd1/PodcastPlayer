@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
+    //todo Teestni todo comit moderfakr
 
     @Override
     public void onBackPressed() {
