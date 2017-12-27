@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.pp.podcastplayer.DownloadActivity"
-    tools:showIn="@layout/activity_download">
+    tools:context="com.example.pp.podcastplayer.AddActivity"
+    tools:showIn="@layout/activity_add">
 
 </android.support.constraint.ConstraintLayout>
