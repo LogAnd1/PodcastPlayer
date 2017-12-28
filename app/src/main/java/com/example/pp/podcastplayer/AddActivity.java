@@ -18,6 +18,7 @@ import android.widget.Toast;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -246,9 +247,11 @@ public class AddActivity extends AppCompatActivity {
                                         FileOutputStream outputStream = openFileOutput("links.txt", MODE_APPEND);
 
                                         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-                                        writer.append(urlRSS);
+
+
+                                        writer.write(urlRSS);
                                         //Log.d("Add", AddActivity.this.getFilesDir().getAbsolutePath());
-                                        writer.append(System.lineSeparator());
+                                        writer.write(System.lineSeparator());
                                         writer.close();
                                         outputStream.close();
 

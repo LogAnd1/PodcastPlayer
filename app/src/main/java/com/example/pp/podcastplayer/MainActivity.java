@@ -62,10 +62,12 @@ public class MainActivity extends AppCompatActivity
         try {
             FileInputStream inputStream = openFileInput("links.txt");
             Scanner scanner = new Scanner(inputStream);
-            while (scanner.hasNext())
-                line = scanner.nextLine();
+            while (scanner.hasNext()) {
+                line = scanner.next();
                 Log.d("Add", line);
+            }
             scanner.close();
+            inputStream.close();
         }
         catch (IOException | InputMismatchException e) {
             Log.d("IO Error", "Branje neuspešno.");
