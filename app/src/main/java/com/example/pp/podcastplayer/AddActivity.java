@@ -34,7 +34,14 @@ import java.util.Scanner;
 public class AddActivity extends AppCompatActivity {
 
     private String urlRSS = "";
-    private List<DataRSS> data;
+
+
+
+
+
+
+  /*  private List<DataRSS> data;
+
 
 
     // Razclenjevanje podatkov
@@ -131,9 +138,9 @@ public class AddActivity extends AppCompatActivity {
             inputStream.close();
         }
     }
-
+*/
     
-
+/*
     // Izvajanje kode v ozadju (pridobivanje podatkov)
     private class FetchFeedTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -147,15 +154,8 @@ public class AddActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            // Preverimo pravilen vnos url-ja
-            if ((TextUtils.isEmpty(url)) || (url.length() < 3))
-                return false;
 
             try {
-                // Preverimo začetek url-ja
-                if(!url.startsWith("https://") && !url.startsWith("http://"))
-                    url = "http://" + url;
-
                 //Log.d("Add", url);
                 URL urlConnection = new URL(url);
                 InputStream inputStream = urlConnection.openConnection().getInputStream();
@@ -190,18 +190,18 @@ public class AddActivity extends AppCompatActivity {
                         "Podcast successfully added!",
                         Toast.LENGTH_LONG).show();
 
-               /*  mRecyclerView.setAdapter(new DataRSSAdapter(mFeedModelList)); */
+
 
             } else {
 
-        }// V primeru ne uspešnega pridobivanja podatkov
+        }
                 Toast.makeText(AddActivity.this,
                 "Please enter a valid RSS feed url!",
         Toast.LENGTH_LONG).show();
     }
     }
 
-
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,9 +267,6 @@ public class AddActivity extends AppCompatActivity {
                                     }
 
                                 }
-
-                                //new FetchFeedTask().execute((Void) null);
-
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

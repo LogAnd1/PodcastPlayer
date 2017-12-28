@@ -3,6 +3,7 @@ package com.example.pp.podcastplayer;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -18,13 +19,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +41,10 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewActivity";
+    String urlRSS;
+    DataRSS data;
+    String naslov;
+    String opis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +67,6 @@ public class MainActivity extends AppCompatActivity
             loadMain();
         }
 
-
-
         // Branje iz datoteke (linki do podcastov)
         String line = "";
         try {
@@ -64,7 +74,10 @@ public class MainActivity extends AppCompatActivity
             Scanner scanner = new Scanner(inputStream);
             while (scanner.hasNext()) {
                 line = scanner.next();
-                Log.d("Add", line);
+
+                urlRSS = line;
+                new FetchFeedTask().execute((Void) null);
+
             }
             scanner.close();
             inputStream.close();
@@ -73,7 +86,6 @@ public class MainActivity extends AppCompatActivity
             Log.d("IO Error", "Branje neuspešno.");
             e.printStackTrace();
         }
-
 
     }
 
@@ -151,8 +163,8 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyRecyclerViewAdapter(getDataSet());
-        mRecyclerView.setAdapter(mAdapter);
+        //mAdapter = new MyRecyclerViewAdapter(getDataSet());
+        //mRecyclerView.setAdapter(mAdapter);
     }
 
     public void loadStart(){
@@ -205,14 +217,75 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    ArrayList results = new ArrayList<DataObject>();
     private ArrayList<DataObject> getDataSet() {
-        ArrayList results = new ArrayList<DataObject>();
-        for (int index = 0; index < 20; index++) {
-            DataObject obj = new DataObject("Some Primary Text " + index,
-                    "Secondary " + index);
-            results.add(index, obj);
-        }
+        int i = 0;
+
+
+        DataObject obj = new DataObject("Title: " + naslov,
+                "Opis: " +opis);
+        results.add(i, obj);
+        i++;
+
+
         return results;
     }
+
+
+
+    // Izvajanje kode v ozadju (pridobivanje podatkov)
+    private class FetchFeedTask extends AsyncTask<Void, Void, Boolean> {
+
+        private String url;
+        int i = 0;
+        Parser p = new Parser();
+
+        @Override
+        // Pridobimo url
+        protected void onPreExecute() {
+            url = urlRSS;
+            //Log.d("Add", url);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            try {
+                //Log.d("Add", url);
+                URL urlConnection = new URL(url);
+                InputStream inputStream = urlConnection.openConnection().getInputStream();
+                // Razclenimo podatke iz povezave
+                data = p.parseData(inputStream);
+                //Log.d("Add", data.naslov);
+                // Log.d("Add", data.naslov);
+                return true;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                naslov = data.naslov;
+                opis = data.opis;
+
+                mAdapter = new MyRecyclerViewAdapter(getDataSet());
+                mRecyclerView.setAdapter(mAdapter);
+
+            } else {
+
+            }
+        }
+    }
+
+
+
 
 }

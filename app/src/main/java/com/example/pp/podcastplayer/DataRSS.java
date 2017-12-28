@@ -7,12 +7,12 @@ package com.example.pp.podcastplayer;
 public class DataRSS {
 
     public String naslov;
-    public String mp3;
+    public String slika;
     public String opis;
 
-    public DataRSS(String naslov, String mp3, String opis) {
+    public DataRSS(String naslov, String slika, String opis) {
         this.naslov = naslov;
-        this.mp3 = mp3;
+        this.slika = slika;
         this.opis = opis;
     }
 }
