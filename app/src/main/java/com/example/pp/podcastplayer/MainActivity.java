@@ -222,8 +222,7 @@ public class MainActivity extends AppCompatActivity
         int i = 0;
 
 
-        DataObject obj = new DataObject("Title: " + naslov,
-                "Opis: " +opis);
+        DataObject obj = new DataObject(naslov, opis);
         results.add(i, obj);
         i++;
 

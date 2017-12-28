@@ -22,7 +22,6 @@ import java.util.List;
 public class Parser {
 
     DataRSS data;
-    DataRSS prva;
     String urlRSS;
 
 
@@ -31,11 +30,11 @@ public class Parser {
             IOException {
 
         String naslov = null;
-       // String slika = null;
+        String slika = null;
         String opis = null;
 
         boolean itemObj = false;
-        DataRSS item = new DataRSS(naslov,null, opis);
+        DataRSS item = new DataRSS(naslov,slika, opis);
 
         //List<DataRSS> items = new ArrayList<>();
 
@@ -93,10 +92,10 @@ public class Parser {
                         naslov = res;
 
                         break;
-                     /*case "enclosure":
-                        mp3 = xmlPullParser.getAttributeValue(null, "url");;
+                     case "image":
+                        slika = xmlPullParser.getAttributeValue(null, "url");;
                         //Log.d("Add", mp3);
-                        break; */
+                        break;
                     case "description":
                         opis = res;
                         break;
@@ -105,13 +104,13 @@ public class Parser {
                 //todo: Poskrbi da se naslov podcast strani shrani posebaj
                 if (naslov != null && opis != null) {
                     if(itemObj) {
-                       // Log.d("Add", naslov + opis);
+                        // Log.d("Add", naslov + opis);
                         // Dodamo oddajo samo v primeru da so vse ustrezne znacke pridobljene
-                        item = new DataRSS(naslov, "test", opis);
+                        item = new DataRSS(naslov, slika, opis);
                     }
 
                     naslov = null;
-                    //mp3 = null;
+                    slika = null;
                     opis = null;
 
                     itemObj = false;
@@ -123,52 +122,5 @@ public class Parser {
             inputStream.close();
         }
     }
-/*
-    // Izvajanje kode v ozadju (pridobivanje podatkov)
-    private class FetchFeedTask extends AsyncTask<Void, Void, Boolean> {
-
-        private String url;
-
-        @Override
-        // Pridobimo url
-        protected void onPreExecute() {
-            url = urlRSS;
-            //Log.d("Add", url);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-
-            try {
-                //Log.d("Add", url);
-                URL urlConnection = new URL(url);
-                InputStream inputStream = urlConnection.openConnection().getInputStream();
-                // Razclenimo podatke iz povezave
-                data = parseData(inputStream);
-                Log.d("Add", data.naslov);
-               // Log.d("Add", data.naslov);
-                return true;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (success) {
-                // Shranjevanje podatkov
-                 prva = data;
-
-            } else {
-
-            }
-        }
-    } */
 
 }
