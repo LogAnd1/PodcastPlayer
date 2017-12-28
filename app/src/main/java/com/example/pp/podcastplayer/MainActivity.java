@@ -13,11 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,6 +54,24 @@ public class MainActivity extends AppCompatActivity
         else{
             loadMain();
         }
+
+
+
+        // Branje iz datoteke (linki do podcastov)
+        String line = "";
+        try {
+            FileInputStream inputStream = openFileInput("links.txt");
+            Scanner scanner = new Scanner(inputStream);
+            while (scanner.hasNext())
+                line = scanner.nextLine();
+                Log.d("Add", line);
+            scanner.close();
+        }
+        catch (IOException | InputMismatchException e) {
+            Log.d("IO Error", "Branje neuspešno.");
+            e.printStackTrace();
+        }
+
 
     }
 

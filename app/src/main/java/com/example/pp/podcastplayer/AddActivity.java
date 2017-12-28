@@ -18,12 +18,17 @@ import android.widget.Toast;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -187,12 +192,12 @@ public class AddActivity extends AppCompatActivity {
                /*  mRecyclerView.setAdapter(new DataRSSAdapter(mFeedModelList)); */
 
             } else {
-                // V primeru ne uspešnega pridobivanja podatkov
+
+        }// V primeru ne uspešnega pridobivanja podatkov
                 Toast.makeText(AddActivity.this,
-                        "Please enter a valid RSS feed url!",
-                        Toast.LENGTH_LONG).show();
-            }
-        }
+                "Please enter a valid RSS feed url!",
+        Toast.LENGTH_LONG).show();
+    }
     }
 
 
@@ -222,8 +227,45 @@ public class AddActivity extends AppCompatActivity {
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 urlRSS = txtUrl.getText().toString();
-                                // Pridobivanje podatkov
-                                new FetchFeedTask().execute((Void) null);
+
+
+                                // Preverimo ce je URL pravilne oblike
+
+                                if ((TextUtils.isEmpty(urlRSS)) || (urlRSS.length() < 3)) {
+                                    Toast.makeText(AddActivity.this,
+                                            "Please enter a valid RSS feed url!",
+                                            Toast.LENGTH_LONG).show();
+                                } else {
+
+                                    if (!urlRSS.startsWith("https://") && !urlRSS.startsWith("http://"))
+                                        urlRSS = "http://" + urlRSS;
+
+                                    // Pisanje podatkov
+
+                                    try {
+                                        FileOutputStream outputStream = openFileOutput("links.txt", MODE_APPEND);
+
+                                        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+                                        writer.append(urlRSS);
+                                        //Log.d("Add", AddActivity.this.getFilesDir().getAbsolutePath());
+                                        writer.append(System.lineSeparator());
+                                        writer.close();
+                                        outputStream.close();
+
+                                        // Usprešno pisanje
+                                        Toast.makeText(AddActivity.this,
+                                                "Podcast successfully added!",
+                                                Toast.LENGTH_LONG).show();
+
+                                    } catch (IOException e) {
+                                        Log.d("IO Error", "Pisanje neuspešno!");
+                                        e.printStackTrace();
+
+                                    }
+
+                                }
+
+                                //new FetchFeedTask().execute((Void) null);
 
                             }
                         })
