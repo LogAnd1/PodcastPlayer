@@ -94,7 +94,7 @@ public class Parser {
                         break;
                      case "image":
                         slika = xmlPullParser.getAttributeValue(null, "url");;
-                        //Log.d("Add", mp3);
+                        //Log.d("Add", slika);
                         break;
                     case "description":
                         opis = res;

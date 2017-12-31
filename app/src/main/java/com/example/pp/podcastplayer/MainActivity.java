@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity
     DataRSS data;
     String naslov;
     String opis;
+    String slika_url;
+    String[] slika;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +54,7 @@ public class MainActivity extends AppCompatActivity
         loadStart();
         int permRead = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         int permWrite = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permRead != PackageManager.PERMISSION_GRANTED || permWrite != PackageManager.PERMISSION_GRANTED)
-        {
+        if (permRead != PackageManager.PERMISSION_GRANTED || permWrite != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                     this, // Aktivnost, ki zahteva pravice.
                     new String[]{ // Tabela zahtevanih pravic.
@@ -62,8 +63,7 @@ public class MainActivity extends AppCompatActivity
                     },
                     221
             );
-        }
-        else{
+        } else {
             loadMain();
         }
 
@@ -81,8 +81,7 @@ public class MainActivity extends AppCompatActivity
             }
             scanner.close();
             inputStream.close();
-        }
-        catch (IOException | InputMismatchException e) {
+        } catch (IOException | InputMismatchException e) {
             Log.d("IO Error", "Branje neuspešno.");
             e.printStackTrace();
         }
@@ -144,7 +143,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void loadMain(){
+    public void loadMain() {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -167,7 +166,7 @@ public class MainActivity extends AppCompatActivity
         //mRecyclerView.setAdapter(mAdapter);
     }
 
-    public void loadStart(){
+    public void loadStart() {
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -182,8 +181,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
     }
+
     @Override
     public void onRequestPermissionsResult(
             int requestCode, // koda zahtevka
@@ -191,9 +190,8 @@ public class MainActivity extends AppCompatActivity
             int[] grantResults) // tabela odobritev
     {
         if (requestCode == 221) { // Če je št. zahtevka enaka 1234.
-            if (grantResults.length == 0){
-            }
-            else {
+            if (grantResults.length == 0) {
+            } else {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     loadMain();
                 }
@@ -204,8 +202,7 @@ public class MainActivity extends AppCompatActivity
     public void tryAgain(View view) {
         int permRead = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         int permWrite = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permRead != PackageManager.PERMISSION_GRANTED || permWrite != PackageManager.PERMISSION_GRANTED)
-        {
+        if (permRead != PackageManager.PERMISSION_GRANTED || permWrite != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                     this, // Aktivnost, ki zahteva pravice.
                     new String[]{ // Tabela zahtevanih pravic.
@@ -218,18 +215,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     ArrayList results = new ArrayList<DataObject>();
+
     private ArrayList<DataObject> getDataSet() {
         int i = 0;
 
 
-        DataObject obj = new DataObject(naslov, opis);
+        DataObject obj = new DataObject(naslov, opis, slika[slika.length - 1]);
         results.add(i, obj);
         i++;
 
 
         return results;
     }
-
 
 
     // Izvajanje kode v ozadju (pridobivanje podatkov)
@@ -274,17 +271,39 @@ public class MainActivity extends AppCompatActivity
             if (success) {
                 naslov = data.naslov;
                 opis = data.opis;
+                slika_url = data.slika;
+                if (slika_url == null) {
+                    slika_url = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg";
+                    slika = slika_url.split("/");
+                    new Downloadimages().execute(slika_url);
 
+                } else {
+
+                }
+            }
+        }
+
+        private class Downloadimages extends AsyncTask<String, Integer, String> {
+            protected String doInBackground(String... urls) {
+                int count = urls.length;
+
+
+                for (int i = 0; i < count; i++) {
+
+                    Downloader.DownloadFile(urls[i], "downloads/images", slika[slika.length - 1]);
+                    if (isCancelled()) break;
+                }
+                return "Downloading...";
+            }
+
+            protected void onProgressUpdate(Integer... progress) {
+            }
+
+            protected void onPostExecute(String result) {
+                Log.e("Downlowded", "finish");
                 mAdapter = new MyRecyclerViewAdapter(getDataSet());
                 mRecyclerView.setAdapter(mAdapter);
-
-            } else {
-
             }
         }
     }
-
-
-
-
 }
