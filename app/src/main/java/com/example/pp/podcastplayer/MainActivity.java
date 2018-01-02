@@ -271,28 +271,34 @@ public class MainActivity extends AppCompatActivity
             if (success) {
                 naslov = data.naslov;
                 opis = data.opis;
+
                 slika_url = data.slika;
+                Log.d("aaa", slika_url);
+
                 if (slika_url == null) {
                     slika_url = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg";
-                    slika = slika_url.split("/");
+                    slika = slika_url.split("/"); // Zadnji element je ime slike
                     new Downloadimages().execute(slika_url);
 
                 } else {
-
+                    slika = slika_url.split("/");
+                    new Downloadimages().execute(slika_url);
                 }
             }
         }
 
         private class Downloadimages extends AsyncTask<String, Integer, String> {
             protected String doInBackground(String... urls) {
-                int count = urls.length;
+               // int count = urls.length;
 
+                Downloader.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
 
-                for (int i = 0; i < count; i++) {
+                /* for (int i = 0; i < count; i++) {
 
                     Downloader.DownloadFile(urls[i], "downloads/images", slika[slika.length - 1]);
                     if (isCancelled()) break;
-                }
+                } */
+
                 return "Downloading...";
             }
 
