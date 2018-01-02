@@ -17,7 +17,7 @@ import java.net.URLConnection;
 
 public class Downloader {
 
-    public static void DownloadFile(String url2, String path, String name){
+    public static String DownloadFile(String url2, String path, String name){
         int count;
         try {
             URL url = new URL((String) url2);
@@ -62,8 +62,11 @@ public class Downloader {
             output.close();
             input.close();
 
+            return "Done";
+
         } catch (Exception e) {
             Log.e("Error: ", e.getMessage());
         }
+        return "Fail";
     }
 }

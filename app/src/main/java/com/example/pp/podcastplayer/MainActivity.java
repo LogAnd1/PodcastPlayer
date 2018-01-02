@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity
@@ -254,21 +255,8 @@ public class MainActivity extends AppCompatActivity
                 data = p.parseData(inputStream);
                 //Log.d("Add", data.naslov);
                 // Log.d("Add", data.naslov);
-                return true;
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
 
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (success) {
                 naslov = data.naslov;
                 opis = data.opis;
 
@@ -278,38 +266,41 @@ public class MainActivity extends AppCompatActivity
                 if (slika_url == null) {
                     slika_url = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg";
                     slika = slika_url.split("/"); // Zadnji element je ime slike
-                    new Downloadimages().execute(slika_url);
+                    // String str_result= new Downloadimages().execute(slika_url).get();
+                    Downloader d = new Downloader();
+                    String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
 
                 } else {
                     slika = slika_url.split("/");
-                    new Downloadimages().execute(slika_url);
+                    // String str_result= new Downloadimages().execute(slika_url).get();
+                    Downloader d = new Downloader();
+                    String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
                 }
+
+
+                return true;
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
             }
+
+            return false;
         }
 
-        private class Downloadimages extends AsyncTask<String, Integer, String> {
-            protected String doInBackground(String... urls) {
-               // int count = urls.length;
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
 
-                Downloader.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
-
-                /* for (int i = 0; i < count; i++) {
-
-                    Downloader.DownloadFile(urls[i], "downloads/images", slika[slika.length - 1]);
-                    if (isCancelled()) break;
-                } */
-
-                return "Downloading...";
-            }
-
-            protected void onProgressUpdate(Integer... progress) {
-            }
-
-            protected void onPostExecute(String result) {
-                Log.e("Downlowded", "finish");
                 mAdapter = new MyRecyclerViewAdapter(getDataSet());
                 mRecyclerView.setAdapter(mAdapter);
+
             }
         }
     }
 }
+

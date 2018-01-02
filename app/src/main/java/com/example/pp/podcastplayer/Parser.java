@@ -84,7 +84,6 @@ public class Parser {
                 }
 
                 // Pridobivanje podatkov iz znack
-                //todo: Dodaj iskanje funkcijo za pridobvanje slike in dolzine podcasta
 
                 switch (tagName){
                     case "title":
@@ -92,17 +91,17 @@ public class Parser {
                         naslov = res;
 
                         break;
-                     case "image":
-                        slika = xmlPullParser.getAttributeValue(null, "url");;
-                        //Log.d("Add", slika);
+                     case "itunes:image":
+                         slika = xmlPullParser.getAttributeValue(null, "href");
+                       // Log.d("Add", slika);
                         break;
                     case "description":
                         opis = res;
                         break;
                 }
 
-                //todo: Poskrbi da se naslov podcast strani shrani posebaj
-                if (naslov != null && opis != null) {
+
+                if (naslov != null && opis != null && slika != null) {
                     if(itemObj) {
                         // Log.d("Add", naslov + opis);
                         // Dodamo oddajo samo v primeru da so vse ustrezne znacke pridobljene
