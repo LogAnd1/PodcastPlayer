@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,8 +42,11 @@ public class MyRecyclerViewAdapter extends RecyclerView
         @Override
         public void onClick(View v) {
               //  myClickListener.onItemClick(getAdapterPosition(), v);
-                Intent intent = new Intent(v.getContext(), PodcastList.class);
-                v.getContext().startActivity(intent);
+            Intent intent = new Intent(v.getContext(), PodcastList.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("naslov",(String) label.getText());
+            intent.putExtras(bundle);
+            v.getContext().startActivity(intent);
         }
     }
 

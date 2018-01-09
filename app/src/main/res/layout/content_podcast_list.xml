@@ -8,4 +8,11 @@
     tools:context="com.example.pp.podcastplayer.PodcastList"
     tools:showIn="@layout/activity_podcast_list">
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="81dp"
+        tools:layout_editor_absoluteY="74dp" />
 </android.support.constraint.ConstraintLayout>
