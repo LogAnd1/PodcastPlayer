@@ -3,6 +3,7 @@ package com.example.pp.podcastplayer;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -18,11 +19,13 @@ import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PodcastList extends AppCompatActivity {
@@ -35,9 +38,8 @@ public class PodcastList extends AppCompatActivity {
     String naslov;
     String urlMP3;
     String opis;
-    String[] slika;
+    String slika;
     String urlRSS;
-    String slika_url;
 
     String znacka = "oddaja";
 
@@ -61,6 +63,7 @@ public class PodcastList extends AppCompatActivity {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 urlRSS = bundle.getString("url");
+                slika = bundle.getString("slika");
                 if (urlRSS == null) {
                     urlRSS = "Bongo";
                 } else {
@@ -101,7 +104,7 @@ public class PodcastList extends AppCompatActivity {
     private ArrayList<DataObject> getDataSet() {
         int i = 0;
 
-        DataObject obj = new DataObject(naslov, opis, slika[slika.length - 1], urlMP3, znacka);
+        DataObject obj = new DataObject(naslov, opis, slika, urlMP3, znacka);
         results.add(i, obj);
         i++;
 
@@ -137,23 +140,9 @@ public class PodcastList extends AppCompatActivity {
 
                 for(DataRSSmp3 dat : data){
                     naslov = dat.naslov;
-                    Log.d("Add", naslov);
                     opis = dat.opis;
                     urlMP3 = dat.mp3;
 
-                    if (slika_url == null) {
-                        slika_url = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg";
-                        slika = slika_url.split("/"); // Zadnji element je ime slike
-                        // String str_result= new Downloadimages().execute(slika_url).get();
-                        Downloader d = new Downloader();
-                        String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
-
-                    } else {
-                        slika = slika_url.split("/");
-                        // String str_result= new Downloadimages().execute(slika_url).get();
-                        Downloader d = new Downloader();
-                        String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
-                    }
                     getDataSet();
                 }
 
@@ -179,7 +168,7 @@ public class PodcastList extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean success) {
             if (success) {
-
+                Collections.reverse(results);
                 mAdapter = new MyRecyclerViewAdapter(results);
                 mRecyclerView.setAdapter(mAdapter);
 

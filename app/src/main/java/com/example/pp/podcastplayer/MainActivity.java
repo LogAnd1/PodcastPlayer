@@ -267,15 +267,14 @@ public class MainActivity extends AppCompatActivity
                 slika_url = data.slika;
                 Log.d("aaa", slika_url);
 
-                slika = slika_url.split("/"); // Zadnji element je ime slike
+
 
                 if (slika_url == null) {
                     slika_url = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg";
-                    slika = slika_url.split("/"); // Zadnji element je ime slike
                 }
+                slika = slika_url.split("/"); // Zadnji element je ime slike
 
-
-                String PATH = Environment.getExternalStorageDirectory().toString()+ "/"+"downloads/images+/" + slika;
+                String PATH = Environment.getExternalStorageDirectory().toString()+ "/downloads/images/" + slika[slika.length - 1];
 
                 File file = new File(PATH);
 

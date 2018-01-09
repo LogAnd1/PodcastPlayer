@@ -32,6 +32,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         ImageView img;
         TextView url;
         String znacka;
+        String image;
 
 
         public DataObjectHolder(View itemView) {
@@ -41,6 +42,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
             dateTime = (TextView) itemView.findViewById(R.id.textView2);
             img = (ImageView)  itemView.findViewById(R.id.imageView2);
             znacka = "";
+            image="";
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -53,11 +55,9 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
                 // Preverimo ce mp3 datoteka ze obstaja
                 String urlMP3 =  url.getText().toString();
-                Log.d("d", urlMP3);
                 String[] nameMP3 = urlMP3.split("/"); // Zadnji element je ime datoteke
 
                 String PATH = Environment.getExternalStorageDirectory().toString()+ "/downloads/mp3/" + nameMP3[nameMP3.length-1];
-                Log.d("d", PATH);
                 File file = new File(PATH);
                 if (!file.exists()) {
                     try {
@@ -87,6 +87,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
                 Intent intent = new Intent(v.getContext(), PodcastList.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("url",(String) url.getText());
+                bundle.putString("slika",(String) image);
                 intent.putExtras(bundle);
                 v.getContext().startActivity(intent);
             }
@@ -119,6 +120,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         holder.img.setImageBitmap(bitmap);
         holder.url.setText(mDataset.get(position).getmUrl());
         holder.znacka = mDataset.get(position).getmZnacka();
+        holder.image = mDataset.get(position).getmImg1();
     }
 
     public void addItem(DataObject dataObj, int index) {

@@ -18,6 +18,7 @@ public class ParserMP3 {
 
     DataRSSmp3 data;
     String urlRSS;
+    int i =1;
 
 
     // Razclenjevanje podatkov
@@ -42,7 +43,7 @@ public class ParserMP3 {
 
             // Pregledujemo znacke do konca dokumenta
             xmlPullParser.nextTag();
-            while (xmlPullParser.next() != XmlPullParser.END_DOCUMENT) {
+            while (xmlPullParser.next() != XmlPullParser.END_DOCUMENT && i<6) {
                 // prebermo tip dogodka (zacetek dokumenta, konec)
                 int event = xmlPullParser.getEventType();
 
@@ -104,6 +105,7 @@ public class ParserMP3 {
                         // Dodamo oddajo samo v primeru da so vse ustrezne znacke pridobljene
                         item = new DataRSSmp3(naslov, mp3, opis);
                         items.add(item);
+                        i++;
                     }
 
                     naslov = null;
