@@ -47,12 +47,12 @@ public class MP3Activity extends AppCompatActivity {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 path_mp3 = bundle.getString("mp3");
-                path_slika = bundle.getString("slika");
+                //path_slika = bundle.getString("slika");
                 naslov = bundle.getString("naslov");
             }
         }
 
-        if(naslov!="" && path_slika!="" && path_mp3!=""){
+        if(naslov!="" && path_mp3!=""){
 
 
             try {

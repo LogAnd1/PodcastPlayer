@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MyRecyclerViewAdapter extends RecyclerView
@@ -33,6 +40,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         TextView url;
         String znacka;
         String image;
+        View Vv;
 
 
         public DataObjectHolder(View itemView) {
@@ -50,7 +58,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         @Override
         public void onClick(View v) {
               //  myClickListener.onItemClick(getAdapterPosition(), v);
-
+            Vv=v;
             if (!znacka.equals("skupina")) {
 
                 // Preverimo ce mp3 datoteka ze obstaja
@@ -58,11 +66,16 @@ public class MyRecyclerViewAdapter extends RecyclerView
                 String[] nameMP3 = urlMP3.split("/"); // Zadnji element je ime datoteke
 
                 String PATH = Environment.getExternalStorageDirectory().toString()+ "/downloads/mp3/" + nameMP3[nameMP3.length-1];
+                String PATH2 = Environment.getExternalStorageDirectory().toString()+ "/downloads/mp3";
                 File file = new File(PATH);
                 if (!file.exists()) {
                     try {
-                        Downloader d = new Downloader();
-                        String code = d.DownloadFile(urlMP3, "downloads/mp3", nameMP3[nameMP3.length - 1]);
+                        //Downloader d = new Downloader();
+                        //String code = d.DownloadFile(urlMP3, "downloads/mp3", nameMP3[nameMP3.length - 1]);
+                        //downloadFile(urlMP3, nameMP3[nameMP3.length - 1],PATH2);
+                        DownloadObjects Doo = new DownloadObjects(v,urlMP3,nameMP3[nameMP3.length - 1],label.getText().toString());
+                        new DownloadFilesTask().execute(Doo);
+
                     } catch (Exception e) {
                        // Log.d("d", e.getMessage());
                         Log.d("d", nameMP3[nameMP3.length - 1]);
@@ -70,9 +83,12 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
                 } else {
 
+
                     Intent intent = new Intent(v.getContext(), MP3Activity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("path_mp3",(String) PATH);
+                    System.out.println(PATH);
+                    System.out.println(label.getText().toString());
+                    bundle.putString("mp3",(String) PATH);
                     bundle.putString("naslov",(String) label.getText().toString());
                    // bundle.putString("path_slika",(String) url.getText());
 
@@ -140,5 +156,127 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
     public interface MyClickListener {
         public void onItemClick(int position, View v);
+    }
+
+    static void downloadFile(String dwnload_file_path, String fileName,
+                             String pathToSave) {
+        int downloadedSize = 0;
+        int totalSize = 0;
+
+        try {
+            URL url = new URL(dwnload_file_path);
+            HttpURLConnection urlConnection = (HttpURLConnection) url
+                    .openConnection();
+
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+
+            // connect
+            urlConnection.connect();
+
+            File myDir;
+            myDir = new File(pathToSave);
+            myDir.mkdirs();
+
+            // create a new file, to save the downloaded file
+
+            String mFileName = fileName;
+            File file = new File(myDir, mFileName);
+
+            FileOutputStream fileOutput = new FileOutputStream(file);
+
+            // Stream used for reading the data from the internet
+            InputStream inputStream = urlConnection.getInputStream();
+
+            // this is the total size of the file which we are downloading
+            totalSize = urlConnection.getContentLength();
+
+            // runOnUiThread(new Runnable() {
+            // public void run() {
+            // pb.setMax(totalSize);
+            // }
+            // });
+
+            // create a buffer...
+            byte[] buffer = new byte[1024];
+            int bufferLength = 0;
+
+            while ((bufferLength = inputStream.read(buffer)) > 0) {
+                fileOutput.write(buffer, 0, bufferLength);
+                downloadedSize += bufferLength;
+                // update the progressbar //
+                // runOnUiThread(new Runnable() {
+                // public void run() {
+                // pb.setProgress(downloadedSize);
+                // float per = ((float)downloadedSize/totalSize) * 100;
+                // cur_val.setText("Downloaded " + downloadedSize + "KB / " +
+                // totalSize + "KB (" + (int)per + "%)" );
+                // }
+                // });
+            }
+            // close the output stream when complete //
+            fileOutput.close();
+            // runOnUiThread(new Runnable() {
+            // public void run() {
+            // // pb.dismiss(); // if you want close it..
+            // }
+            // });
+
+        } catch (final MalformedURLException e) {
+            Log.d("Error","Error : MalformedURLException " + e);
+            e.printStackTrace();
+        } catch (final IOException e) {
+            Log.d("Error","Error : IOException " + e);
+            e.printStackTrace();
+        } catch (final Exception e) {
+            Log.d("Error","Error : Please check your internet connection " + e);
+        }
+    }
+    public static class DownloadObjects {
+        private View v;
+        private String url;
+        private String name;
+        private String naslov;
+
+        DownloadObjects(View v, String url, String name, String naslov){
+            this.v=v;
+            this.url=url;
+            this.name=name;
+            this.naslov=naslov;
+        }
+    }
+
+    private static class DownloadFilesTask extends AsyncTask<DownloadObjects, Integer, Long> {
+        View vi;
+        String naslov;
+        String name;
+        protected Long doInBackground(DownloadObjects... object) {
+            int count = object.length;
+            long totalSize = 0;
+            for (int i = 0; i < count; i++) {
+                Downloader d = new Downloader();
+                String code = d.DownloadFile(object[i].url, "downloads/mp3", object[i].name);
+                vi=object[i].v;
+                naslov=object[i].naslov;
+                name=object[i].name;
+                if (isCancelled()) break;
+            }
+            return totalSize;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+        }
+
+        protected void onPostExecute(Long result) {
+            Intent intent = new Intent(vi.getContext(), MP3Activity.class);
+            Bundle bundle = new Bundle();
+            String PATH = Environment.getExternalStorageDirectory().toString()+ "/downloads/mp3/" + name;
+            bundle.putString("mp3",(String) PATH);
+            bundle.putString("naslov",naslov);
+            // bundle.putString("path_slika",(String) url.getText());
+
+            intent.putExtras(bundle);
+            vi.getContext().startActivity(intent);
+        }
     }
 }
