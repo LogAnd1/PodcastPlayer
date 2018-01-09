@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MyRecyclerViewAdapter extends RecyclerView
@@ -30,6 +31,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         TextView dateTime;
         ImageView img;
         TextView url;
+        String znacka;
 
 
         public DataObjectHolder(View itemView) {
@@ -38,6 +40,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
             url =  (TextView) itemView.findViewById(R.id.textView3);
             dateTime = (TextView) itemView.findViewById(R.id.textView2);
             img = (ImageView)  itemView.findViewById(R.id.imageView2);
+            znacka = "";
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -45,11 +48,48 @@ public class MyRecyclerViewAdapter extends RecyclerView
         @Override
         public void onClick(View v) {
               //  myClickListener.onItemClick(getAdapterPosition(), v);
-            Intent intent = new Intent(v.getContext(), PodcastList.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("url",(String) url.getText());
-            intent.putExtras(bundle);
-            v.getContext().startActivity(intent);
+
+            if (!znacka.equals("skupina")) {
+
+                // Preverimo ce mp3 datoteka ze obstaja
+                String urlMP3 =  url.getText().toString();
+                Log.d("d", urlMP3);
+                String[] nameMP3 = urlMP3.split("/"); // Zadnji element je ime datoteke
+
+                String PATH = Environment.getExternalStorageDirectory().toString()+ "/downloads/mp3/" + nameMP3[nameMP3.length-1];
+                Log.d("d", PATH);
+                File file = new File(PATH);
+                if (!file.exists()) {
+                    try {
+                        Downloader d = new Downloader();
+                        String code = d.DownloadFile(urlMP3, "downloads/mp3", nameMP3[nameMP3.length - 1]);
+                    } catch (Exception e) {
+                       // Log.d("d", e.getMessage());
+                        Log.d("d", nameMP3[nameMP3.length - 1]);
+                    }
+
+                } else {
+
+                    Intent intent = new Intent(v.getContext(), MP3Activity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("path_mp3",(String) PATH);
+                    bundle.putString("naslov",(String) label.getText().toString());
+                   // bundle.putString("path_slika",(String) url.getText());
+
+                    intent.putExtras(bundle);
+                    v.getContext().startActivity(intent);
+
+                }
+
+
+
+            } else {
+                Intent intent = new Intent(v.getContext(), PodcastList.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("url",(String) url.getText());
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
+            }
         }
     }
 
@@ -78,6 +118,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()+"/downloads/images/"+mDataset.get(position).getmImg1());
         holder.img.setImageBitmap(bitmap);
         holder.url.setText(mDataset.get(position).getmUrl());
+        holder.znacka = mDataset.get(position).getmZnacka();
     }
 
     public void addItem(DataObject dataObj, int index) {

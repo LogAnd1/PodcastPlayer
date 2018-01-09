@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     String opis;
     String slika_url;
     String[] slika;
+    String znacka = "skupina";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity
         int i = 0;
 
 
-        DataObject obj = new DataObject(naslov, opis, slika[slika.length - 1], urlMP3);
+        DataObject obj = new DataObject(naslov, opis, slika[slika.length - 1], urlMP3, znacka);
         results.add(i, obj);
         i++;
 

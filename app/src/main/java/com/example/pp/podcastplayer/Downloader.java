@@ -65,7 +65,7 @@ public class Downloader {
             return "Done";
 
         } catch (Exception e) {
-            Log.e("Error: ", e.getMessage());
+            Log.e("Error: "," " +  e.getMessage());
         }
         return "Fail";
     }

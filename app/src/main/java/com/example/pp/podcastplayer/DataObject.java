@@ -9,13 +9,15 @@ public class DataObject {
     private String mText2;
     private String mImg1;
     private String mUrl;
+    private String mZnacka;
 
 
-    DataObject (String text1, String text2, String img1, String url){
+    DataObject (String text1, String text2, String img1, String url, String znacka){
         mText1 = text1;
         mText2 = text2;
         mImg1 = img1;
         mUrl =  url;
+        mZnacka = znacka;
     }
 
     public String getmText1() {
@@ -42,9 +44,18 @@ public class DataObject {
         this.mImg1 = mImg1;
     }
 
+
+    // Url
     public String getmUrl() {
         return mUrl;
     }
 
     public void setmUrl(String mUrl) {this.mUrl = mUrl; }
+
+    // Znacka
+    public String getmZnacka() {
+        return mZnacka;
+    }
+
+    public void setmZnacka(String mUrl) {this.mZnacka = mZnacka; }
 }
