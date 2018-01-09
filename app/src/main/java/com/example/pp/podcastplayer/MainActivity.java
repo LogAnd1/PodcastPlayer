@@ -126,12 +126,27 @@ public class MainActivity extends AppCompatActivity
         // Odpiranje download zaslona iz menu-ja
         else if (id == R.id.action_add) {
             Intent intent = new Intent(this, AddActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 0);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                finish();
+                startActivity(getIntent());
+            }
+        }
+    }
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -217,6 +232,10 @@ public class MainActivity extends AppCompatActivity
             );
         }
     }
+
+
+
+
 
     ArrayList results = new ArrayList<DataObject>();
 

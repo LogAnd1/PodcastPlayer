@@ -1,6 +1,7 @@
 package com.example.pp.podcastplayer;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -255,10 +256,16 @@ public class AddActivity extends AppCompatActivity {
                                         writer.close();
                                         outputStream.close();
 
-                                        // Usprešno pisanje
+                                        // Uspešno pisanje
                                         Toast.makeText(AddActivity.this,
                                                 "Podcast successfully added!",
                                                 Toast.LENGTH_LONG).show();
+                                        Intent returnIntent = new Intent();
+                                        returnIntent.putExtra("result",0);
+                                        setResult(MainActivity.RESULT_OK,returnIntent);
+                                        finish();
+
+
 
                                     } catch (IOException e) {
                                         Log.d("IO Error", "Pisanje neuspešno!");
