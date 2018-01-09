@@ -168,7 +168,7 @@ public class PodcastList extends AppCompatActivity {
         protected void onPostExecute(Boolean success) {
             if (success) {
 
-                mAdapter = new MyRecyclerViewAdapter(getDataSet());
+                mAdapter = new MyRecyclerViewAdapter(results);
                 mRecyclerView.setAdapter(mAdapter);
 
             }
