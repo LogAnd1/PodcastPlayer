@@ -73,7 +73,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
                         //Downloader d = new Downloader();
                         //String code = d.DownloadFile(urlMP3, "downloads/mp3", nameMP3[nameMP3.length - 1]);
                         //downloadFile(urlMP3, nameMP3[nameMP3.length - 1],PATH2);
-                        DownloadObjects Doo = new DownloadObjects(v,urlMP3,nameMP3[nameMP3.length - 1],label.getText().toString());
+                        DownloadObjects Doo = new DownloadObjects(v,urlMP3,nameMP3[nameMP3.length - 1],label.getText().toString(),image);
                         new DownloadFilesTask().execute(Doo);
 
                     } catch (Exception e) {
@@ -86,11 +86,10 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
                     Intent intent = new Intent(v.getContext(), MP3Activity.class);
                     Bundle bundle = new Bundle();
-                    System.out.println(PATH);
-                    System.out.println(label.getText().toString());
                     bundle.putString("mp3",(String) PATH);
                     bundle.putString("naslov",(String) label.getText().toString());
-                   // bundle.putString("path_slika",(String) url.getText());
+                    String PATH3 = Environment.getExternalStorageDirectory().toString()+ "/downloads/images/" + image;
+                    bundle.putString("slika",(String) PATH3);
 
                     intent.putExtras(bundle);
                     v.getContext().startActivity(intent);
@@ -237,12 +236,14 @@ public class MyRecyclerViewAdapter extends RecyclerView
         private String url;
         private String name;
         private String naslov;
+        private String image;
 
-        DownloadObjects(View v, String url, String name, String naslov){
+        DownloadObjects(View v, String url, String name, String naslov, String image){
             this.v=v;
             this.url=url;
             this.name=name;
             this.naslov=naslov;
+            this.image=image;
         }
     }
 
@@ -250,6 +251,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         View vi;
         String naslov;
         String name;
+        String image;
         protected Long doInBackground(DownloadObjects... object) {
             int count = object.length;
             long totalSize = 0;
@@ -259,6 +261,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
                 vi=object[i].v;
                 naslov=object[i].naslov;
                 name=object[i].name;
+                image=object[i].image;
                 if (isCancelled()) break;
             }
             return totalSize;
@@ -273,10 +276,16 @@ public class MyRecyclerViewAdapter extends RecyclerView
             String PATH = Environment.getExternalStorageDirectory().toString()+ "/downloads/mp3/" + name;
             bundle.putString("mp3",(String) PATH);
             bundle.putString("naslov",naslov);
-            // bundle.putString("path_slika",(String) url.getText());
+            String PATH3 = Environment.getExternalStorageDirectory().toString()+ "/downloads/images/" + image;
+            bundle.putString("slika",(String) PATH3);
 
             intent.putExtras(bundle);
             vi.getContext().startActivity(intent);
+
+
+
+
+
         }
     }
 }
