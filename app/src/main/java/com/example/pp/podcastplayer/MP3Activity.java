@@ -3,7 +3,9 @@ package com.example.pp.podcastplayer;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -55,16 +57,20 @@ public class MP3Activity extends AppCompatActivity {
         if(naslov!="" && path_mp3!=""){
 
 
+
+               MP.setAudioStreamType(AudioManager.STREAM_MUSIC);
+               Uri uri = Uri.parse(path_mp3);
             try {
-                MP.setDataSource(path_mp3);
+                MP.setDataSource(getApplicationContext(),uri);
                 MP.prepare();
-                TVNaslov.setText(naslov);
-                TVDur.setText(MP.getDuration());
-                Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()+path_slika);
-                IV.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            TVNaslov.setText(naslov);
+                //TVDur.setText(MP.getDuration());
+                //Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()+path_slika);
+                //IV.setImageBitmap(bitmap);
+
 
         }
 
@@ -76,9 +82,9 @@ public class MP3Activity extends AppCompatActivity {
                     ImageButton IBPause = (ImageButton) findViewById(R.id.pausebutton);
                     IBPause.setVisibility(View.VISIBLE);
                     ImageButton IBPlay = (ImageButton) findViewById(R.id.playbutton);
-                    IBPause.setVisibility(View.GONE);
+                    IBPlay.setVisibility(View.GONE);
 
-                    timer.scheduleAtFixedRate(new TimerTask() {
+                    /*timer.scheduleAtFixedRate(new TimerTask() {
                         @Override
                         public void run() {
                             runOnUiThread(new Runnable() {
@@ -98,7 +104,7 @@ public class MP3Activity extends AppCompatActivity {
                                 }
                             });
                         }
-                    }, 0, 1000);
+                    }, 0, 1000);*/
 
 
                 }
@@ -113,7 +119,7 @@ public class MP3Activity extends AppCompatActivity {
                     ImageButton IBPause = (ImageButton) findViewById(R.id.pausebutton);
                     IBPause.setVisibility(View.GONE);
                     ImageButton IBPlay = (ImageButton) findViewById(R.id.playbutton);
-                    IBPause.setVisibility(View.VISIBLE);
+                    IBPlay.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -122,6 +128,7 @@ public class MP3Activity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp(){
+        MP.stop();
         finish();
         return true;
     }

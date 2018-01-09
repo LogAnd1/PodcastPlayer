@@ -79,10 +79,6 @@ public class PodcastList extends AppCompatActivity {
 
     public void loadStart() {
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        setContentView(R.layout.activity_main);
-
-
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
