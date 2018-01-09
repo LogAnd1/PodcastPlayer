@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +22,7 @@ import android.view.View;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -259,24 +261,28 @@ public class MainActivity extends AppCompatActivity
 
                 naslov = data.naslov;
                 opis = data.opis;
-                urlMP3 =
+                urlMP3 = url;
 
                 slika_url = data.slika;
                 Log.d("aaa", slika_url);
 
+                slika = slika_url.split("/"); // Zadnji element je ime slike
+
                 if (slika_url == null) {
                     slika_url = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg";
                     slika = slika_url.split("/"); // Zadnji element je ime slike
-                    // String str_result= new Downloadimages().execute(slika_url).get();
-                    Downloader d = new Downloader();
-                    String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
+                }
 
-                } else {
-                    slika = slika_url.split("/");
-                    // String str_result= new Downloadimages().execute(slika_url).get();
+
+                String PATH = Environment.getExternalStorageDirectory().toString()+ "/"+"downloads/images+/" + slika;
+
+                File file = new File(PATH);
+
+                if(!file.exists()){
                     Downloader d = new Downloader();
                     String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
                 }
+
 
 
                 return true;
@@ -299,7 +305,6 @@ public class MainActivity extends AppCompatActivity
 
                 mAdapter = new MyRecyclerViewAdapter(getDataSet());
                 mRecyclerView.setAdapter(mAdapter);
-
             }
         }
     }

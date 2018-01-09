@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PodcastList extends AppCompatActivity {
 
@@ -31,8 +32,6 @@ public class PodcastList extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewActivity";
 
-    DataRSSmp3 data;
-
     String naslov;
     String urlMP3;
     String opis;
@@ -40,7 +39,9 @@ public class PodcastList extends AppCompatActivity {
     String urlRSS;
     String slika_url;
 
+    int i = 0;
 
+    List<DataRSSmp3> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,8 @@ public class PodcastList extends AppCompatActivity {
                     urlRSS = "Bongo";
                 } else {
                     new PodcastList.FetchFeedTask().execute((Void) null);
+
+
                 }
             }
         }
@@ -115,7 +118,7 @@ public class PodcastList extends AppCompatActivity {
         // Pridobimo url
         protected void onPreExecute() {
             url = urlRSS;
-            //Log.d("Add", url);
+            Log.d("Add", url);
         }
 
         @Override
@@ -131,9 +134,10 @@ public class PodcastList extends AppCompatActivity {
                 // Log.d("Add", data.naslov);
 
 
-                naslov = data.naslov;
-                opis = data.opis;
-                urlMP3 = data.mp3;
+                naslov = data.get(0).naslov;
+                Log.d("Add", naslov);
+                opis = data.get(0).opis;
+                urlMP3 = data.get(0).mp3;
 
 
                 Log.d("d", urlMP3);

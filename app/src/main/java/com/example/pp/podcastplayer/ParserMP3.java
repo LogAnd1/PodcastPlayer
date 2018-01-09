@@ -21,7 +21,7 @@ public class ParserMP3 {
 
 
     // Razclenjevanje podatkov
-    public DataRSSmp3 parseData(InputStream inputStream) throws XmlPullParserException,
+    public  List<DataRSSmp3> parseData(InputStream inputStream) throws XmlPullParserException,
             IOException {
 
         String naslov = null;
@@ -32,7 +32,7 @@ public class ParserMP3 {
         DataRSSmp3 item = new DataRSSmp3(naslov,mp3,opis);
 
 
-        List<DataRSS> items = new ArrayList<>();
+        List<DataRSSmp3> items = new ArrayList<>();
 
         try {
             // Uporabimo xmlPullParser
@@ -103,6 +103,7 @@ public class ParserMP3 {
                         // Log.d("Add", naslov + opis);
                         // Dodamo oddajo samo v primeru da so vse ustrezne znacke pridobljene
                         item = new DataRSSmp3(naslov, mp3, opis);
+                        items.add(item);
                     }
 
                     naslov = null;
@@ -113,7 +114,7 @@ public class ParserMP3 {
                 }
             }
 
-            return item;
+            return items;
         } finally {
             inputStream.close();
         }

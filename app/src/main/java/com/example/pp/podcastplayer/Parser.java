@@ -106,13 +106,11 @@ public class Parser {
                         // Log.d("Add", naslov + opis);
                         // Dodamo oddajo samo v primeru da so vse ustrezne znacke pridobljene
                         item = new DataRSS(naslov, slika, opis);
+
                     }
+                    Log.d("aaa","Parse konec");
+                    break;
 
-                    naslov = null;
-                    slika = null;
-                    opis = null;
-
-                    itemObj = false;
                 }
             }
 
