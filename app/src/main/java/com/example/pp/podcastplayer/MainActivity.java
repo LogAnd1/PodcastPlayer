@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewActivity";
     String urlRSS;
+    String urlMP3;
     DataRSS data;
     String naslov;
     String opis;
@@ -220,7 +221,7 @@ public class MainActivity extends AppCompatActivity
         int i = 0;
 
 
-        DataObject obj = new DataObject(naslov, opis, slika[slika.length - 1]);
+        DataObject obj = new DataObject(naslov, opis, slika[slika.length - 1], urlMP3);
         results.add(i, obj);
         i++;
 
@@ -258,6 +259,7 @@ public class MainActivity extends AppCompatActivity
 
                 naslov = data.naslov;
                 opis = data.opis;
+                urlMP3 =
 
                 slika_url = data.slika;
                 Log.d("aaa", slika_url);
