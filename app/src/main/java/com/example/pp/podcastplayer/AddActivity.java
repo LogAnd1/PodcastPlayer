@@ -49,7 +49,7 @@ public class AddActivity extends AppCompatActivity {
             IOException {
 
         String naslov = "";
-        String mp3 = "";
+
         String opis = "";
 
         boolean itemObj = false;

@@ -1,5 +1,6 @@
 package com.example.pp.podcastplayer;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -39,7 +40,9 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
         @Override
         public void onClick(View v) {
-            myClickListener.onItemClick(getAdapterPosition(), v);
+              //  myClickListener.onItemClick(getAdapterPosition(), v);
+                Intent intent = new Intent(v.getContext(), PodcastList.class);
+                v.getContext().startActivity(intent);
         }
     }
 
