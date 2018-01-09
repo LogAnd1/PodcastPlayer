@@ -8,4 +8,91 @@
     tools:context="com.example.pp.podcastplayer.MP3Activity"
     tools:showIn="@layout/activity_mp3">
 
+    <TextView
+        android:id="@+id/naslovpesmi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Naslov"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="176dp" />
+
+    <ImageView
+        android:id="@+id/slika"
+        android:layout_width="300"
+        android:layout_height="300"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/naslovpesmi"
+        app:srcCompat="@drawable/side_nav_bar" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/slika"
+        app:layout_constraintEnd_toEndOf="@+id/slika"
+        app:layout_constraintStart_toStartOf="@+id/slika"
+        app:srcCompat="?android:attr/tooltipFrameBackground" />
+
+    <ImageButton
+        android:id="@+id/pausebutton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="false"
+        android:background="@android:drawable/toast_frame"
+        app:layout_constraintBottom_toBottomOf="@+id/slika"
+        app:layout_constraintEnd_toEndOf="@+id/slika"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="@+id/slika"
+        app:layout_constraintTop_toTopOf="@+id/slika"
+        app:srcCompat="@android:drawable/ic_media_pause" />
+
+    <ImageButton
+        android:id="@+id/playbutton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:drawable/toast_frame"
+        app:layout_constraintBottom_toBottomOf="@+id/slika"
+        app:layout_constraintEnd_toEndOf="@+id/slika"
+        app:layout_constraintStart_toStartOf="@+id/slika"
+        app:layout_constraintTop_toTopOf="@+id/slika"
+        app:srcCompat="@android:drawable/ic_media_play" />
+
+    <TextView
+        android:id="@+id/current"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:text="0:00"
+        android:textColor="@color/cardview_light_background"
+        app:layout_constraintBottom_toBottomOf="@+id/slika"
+        app:layout_constraintStart_toStartOf="@+id/slika" />
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="3:43"
+        android:textColor="@color/cardview_light_background"
+        app:layout_constraintBottom_toBottomOf="@+id/slika"
+        app:layout_constraintEnd_toEndOf="@+id/slika" />
+
 </android.support.constraint.ConstraintLayout>
