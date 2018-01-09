@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity
                     Downloader d = new Downloader();
                     String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
                 }
-
+                getDataSet();
 
 
                 return true;
@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(Boolean success) {
             if (success) {
 
-                mAdapter = new MyRecyclerViewAdapter(getDataSet());
+                mAdapter = new MyRecyclerViewAdapter(results);
                 mRecyclerView.setAdapter(mAdapter);
             }
         }

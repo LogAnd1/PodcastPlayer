@@ -135,28 +135,33 @@ public class PodcastList extends AppCompatActivity {
                 //Log.d("Add", data.naslov);
                 // Log.d("Add", data.naslov);
 
+                for(DataRSSmp3 dat : data){
+                    naslov = dat.naslov;
+                    Log.d("Add", naslov);
+                    opis = dat.opis;
+                    urlMP3 = dat.mp3;
 
-                naslov = data.get(0).naslov;
-                Log.d("Add", naslov);
-                opis = data.get(0).opis;
-                urlMP3 = data.get(0).mp3;
+                    if (slika_url == null) {
+                        slika_url = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg";
+                        slika = slika_url.split("/"); // Zadnji element je ime slike
+                        // String str_result= new Downloadimages().execute(slika_url).get();
+                        Downloader d = new Downloader();
+                        String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
+
+                    } else {
+                        slika = slika_url.split("/");
+                        // String str_result= new Downloadimages().execute(slika_url).get();
+                        Downloader d = new Downloader();
+                        String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
+                    }
+                    getDataSet();
+                }
+
 
 
                // Log.d("d", urlMP3);
 
-                if (slika_url == null) {
-                    slika_url = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg";
-                    slika = slika_url.split("/"); // Zadnji element je ime slike
-                    // String str_result= new Downloadimages().execute(slika_url).get();
-                    Downloader d = new Downloader();
-                    String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
 
-                } else {
-                    slika = slika_url.split("/");
-                    // String str_result= new Downloadimages().execute(slika_url).get();
-                    Downloader d = new Downloader();
-                    String code = d.DownloadFile(slika_url, "downloads/images", slika[slika.length - 1]);
-                }
 
                 return true;
 
@@ -175,7 +180,7 @@ public class PodcastList extends AppCompatActivity {
         protected void onPostExecute(Boolean success) {
             if (success) {
 
-                mAdapter = new MyRecyclerViewAdapter(getDataSet());
+                mAdapter = new MyRecyclerViewAdapter(results);
                 mRecyclerView.setAdapter(mAdapter);
 
             }
