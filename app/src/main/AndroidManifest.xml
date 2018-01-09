@@ -32,7 +32,11 @@
         <activity
             android:name=".PodcastList"
             android:label="@string/title_activity_podcast_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MP3Activity"
+            android:label="MP3 Player"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
