@@ -29,10 +29,13 @@ public class MyRecyclerViewAdapter extends RecyclerView
         TextView label;
         TextView dateTime;
         ImageView img;
+        TextView url;
+
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             label = (TextView) itemView.findViewById(R.id.textView);
+            url =  (TextView) itemView.findViewById(R.id.textView3);
             dateTime = (TextView) itemView.findViewById(R.id.textView2);
             img = (ImageView)  itemView.findViewById(R.id.imageView2);
             Log.i(LOG_TAG, "Adding Listener");
@@ -44,7 +47,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
               //  myClickListener.onItemClick(getAdapterPosition(), v);
             Intent intent = new Intent(v.getContext(), PodcastList.class);
             Bundle bundle = new Bundle();
-            bundle.putString("naslov",(String) label.getText());
+            bundle.putString("url",(String) url.getText());
             intent.putExtras(bundle);
             v.getContext().startActivity(intent);
         }
@@ -74,6 +77,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         holder.dateTime.setText(mDataset.get(position).getmText2());
         Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()+"/downloads/images/"+mDataset.get(position).getmImg1());
         holder.img.setImageBitmap(bitmap);
+        holder.url.setText(mDataset.get(position).getmUrl());
     }
 
     public void addItem(DataObject dataObj, int index) {
