@@ -77,7 +77,7 @@ public class PodcastList extends AppCompatActivity {
         return true;
     }
 
-    public void loadStart() {
+    public void loadStart() { 
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
