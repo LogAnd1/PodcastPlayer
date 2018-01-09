@@ -8,4 +8,5 @@
     <string name="action_add">Add podcast</string>
     <string name="title_activity_download">DownloadActivity</string>
     <string name="title_activity_podcast_list">PodcastList</string>
+    <string name="title_activity_test">TestActivity</string>
 </resources>

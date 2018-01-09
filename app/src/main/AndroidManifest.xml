@@ -37,6 +37,10 @@
             android:name=".MP3Activity"
             android:label="MP3 Player"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
