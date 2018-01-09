@@ -140,7 +140,7 @@ public class PodcastList extends AppCompatActivity {
                 urlMP3 = data.get(0).mp3;
 
 
-                Log.d("d", urlMP3);
+               // Log.d("d", urlMP3);
 
                 if (slika_url == null) {
                     slika_url = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg";
