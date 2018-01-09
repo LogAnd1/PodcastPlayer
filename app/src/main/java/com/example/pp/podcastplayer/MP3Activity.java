@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,7 +28,7 @@ public class MP3Activity extends AppCompatActivity {
     String path_slika = "";
     String naslov = "";
     MediaPlayer MP = new MediaPlayer();
-    Timer timer = new Timer();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class MP3Activity extends AppCompatActivity {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 path_mp3 = bundle.getString("mp3");
-                //path_slika = bundle.getString("slika");
+                path_slika = bundle.getString("slika");
                 naslov = bundle.getString("naslov");
             }
         }
@@ -67,9 +70,13 @@ public class MP3Activity extends AppCompatActivity {
                 e.printStackTrace();
             }
             TVNaslov.setText(naslov);
-                //TVDur.setText(MP.getDuration());
-                //Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()+path_slika);
-                //IV.setImageBitmap(bitmap);
+            Date date = new Date(MP.getDuration());
+            DateFormat formatter = new SimpleDateFormat("mm:ss");
+            String dateFormatted = formatter.format(date);
+                TVDur.setText(dateFormatted);
+                System.out.println(path_slika);
+                Bitmap bitmap = BitmapFactory.decodeFile(path_slika);
+                IV.setImageBitmap(bitmap);
 
 
         }
@@ -83,8 +90,8 @@ public class MP3Activity extends AppCompatActivity {
                     IBPause.setVisibility(View.VISIBLE);
                     ImageButton IBPlay = (ImageButton) findViewById(R.id.playbutton);
                     IBPlay.setVisibility(View.GONE);
-
-                    /*timer.scheduleAtFixedRate(new TimerTask() {
+                    final Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(new TimerTask() {
                         @Override
                         public void run() {
                             runOnUiThread(new Runnable() {
@@ -94,7 +101,10 @@ public class MP3Activity extends AppCompatActivity {
                                         TVCurr.post(new Runnable() {
                                             @Override
                                             public void run() {
-                                                TVCurr.setText(MP.getCurrentPosition());
+                                                Date date = new Date(MP.getCurrentPosition());
+                                                DateFormat formatter = new SimpleDateFormat("mm:ss");
+                                                String dateFormatted = formatter.format(date);
+                                                TVCurr.setText(dateFormatted);
                                             }
                                         });
                                     } else {
@@ -104,7 +114,7 @@ public class MP3Activity extends AppCompatActivity {
                                 }
                             });
                         }
-                    }, 0, 1000);*/
+                    }, 0, 1000);
 
 
                 }
